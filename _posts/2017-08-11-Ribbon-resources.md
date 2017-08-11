@@ -17,8 +17,7 @@ Ribbon是Netflix公司开源的一个负载均衡的项目，它属于上述的�
 * 多协议（HTTP，TCP，UDP）支持异步和反应模型
 * 缓存和批处理 
 
-
-
+<!--more-->
 
 ## RestTemplate和Ribbon相结合
 
