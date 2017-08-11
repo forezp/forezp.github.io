@@ -9,13 +9,14 @@ tags:  SpringCloud Zuul
 {:toc}
 
 ## Zuul 架构图
- 
- ![zuul.png](http://upload-images.jianshu.io/upload_images/2279594-2e6134e4743b0483.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
- 
- 
+
+
+
+
 在zuul中， 整个请求的过程是这样的，首先将请求给zuulservlet处理，zuulservlet中有一个zuulRunner对象，该对象中初始化了RequestContext：作为存储整个请求的一些数据，并被所有的zuulfilter共享。zuulRunner中还有 FilterProcessor，FilterProcessor作为执行所有的zuulfilter的管理器。FilterProcessor从filterloader 中获取zuulfilter，而zuulfilter是被filterFileManager所加载，并支持groovy热加载，采用了轮询的方式热加载。有了这些filter之后，zuulservelet首先执行的Pre类型的过滤器，再执行route类型的过滤器，最后执行的是post 类型的过滤器，如果在执行这些过滤器有错误的时候则会执行error类型的过滤器。执行完这些过滤器，最终将请求的结果返回给客户端。
 
-
+ ![zuul.png](http://upload-images.jianshu.io/upload_images/2279594-2e6134e4743b0483.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+ 
 ## zuul工作原理源码分析
  
 在之前已经讲过，如何使用zuul，其中不可缺少的一个步骤就是在程序的启动类加上＠EnableZuulProxy，该EnableZuulProxy类代码如下：

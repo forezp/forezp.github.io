@@ -12,6 +12,9 @@ tags:  SpringCloud Feign
 
 Feign是由Retrofit，JAXRS-2.0和WebSocket启发的一个java到http客户端绑定。 Feign的主要目标是将Java Http Clients变得简单。Feign的源码地址：https://github.com/OpenFeign/feign
 
+
+
+
 ## 写一个Feign
 
 在我之前的博文有写到如何用Feign去消费服务，文章地址：http://blog.csdn.net/forezp/article/details/69808079  。

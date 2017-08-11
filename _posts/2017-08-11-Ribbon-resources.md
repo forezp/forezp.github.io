@@ -17,6 +17,9 @@ Ribbon是Netflix公司开源的一个负载均衡的项目，它属于上述的�
 * 多协议（HTTP，TCP，UDP）支持异步和反应模型
 * 缓存和批处理 
 
+
+
+
 ## RestTemplate和Ribbon相结合
 
 Ribbon在Netflix组件是非常重要的一个组件，在Zuul中使用Ribbon做负载均衡，以及Feign组件的结合等。在Spring Cloud 中，作为开发中，做的最多的可能是将RestTemplate和Ribbon相结合，你可能会这样写：
