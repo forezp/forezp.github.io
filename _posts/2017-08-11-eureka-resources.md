@@ -8,14 +8,13 @@ tags:  SpringCloud Eureka
 * content
 {:toc}
 
+本篇文章以源码的角度来深入理解Eureka.
+
+
+
+
 ##  Eureka的一些概念
 
- 本篇文章以源码的角度来深入理解Eureka.
- 
- 
- 
- 
---
 * Register：服务注册
 当Eureka客户端向Eureka Server注册时，它提供自身的元数据，比如IP地址、端口，运行状况指示符URL，主页等。
 
