@@ -11,11 +11,11 @@ type: page
 
 ## 关于我
 
- dajiahao !
-
+技术极客。
+ 
 ## 联系我
 
-* GitHub：[Forezo](https://github.com/forezp)
+* GitHub：[Forezp](https://github.com/forezp)
 * email：miles02@163.com
 * [知乎](https://www.zhihu.com/people/forezp)
 
@@ -26,16 +26,24 @@ type: page
 
 ~欢迎使用~
 
-欢迎大家提一些对本站主题的建议，可以直接在下面留言或者新建一个 
+欢迎大家提出宝贵的意见，另外因为由于国内的评论插件，比如畅言等的不稳定性，所以我打算关闭此功能。有事加我微信.
 
-### Update Log
+加我微信，拉你进Spring Cloud中国社区群
+<br>
+<br>
+<img src="http://img.blog.csdn.net/20170614094145509?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZm9yZXpw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="200" height="220">
+<br>
+<br>
+关注我的微信公众号，优质内容定期分享
+<br>
+<img src="http://img.blog.csdn.net/20170708155617159?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZm9yZXpw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="200" height="200/">
 
-aaa
+
 
 
 ## 友情链接
 
-[羡辙杂俎](http://zhangwenli.com/blog) \| [Anotherhome](https://www.anotherhome.net) \| [Reverland](http://reverland.org/) \| [ZhiLi](http://lizhipower.github.io/) \| [Simmer](http://simmer-jun.github.io/) \| [awthink](http://awthink.net/) \| [Aralic](http://aralic.github.io/) \| [zchen9](http://www.chen9.info/) \| [wuhuaji](http://wuhuaji.me/) \| [lisheng](http://www.lishengcn.cn/) \| [薛彬XueBin](http://axuebin.com/blog/) \| [TBOOX](http://www.tboox.org/cn/) \|  [Ling](http://linglinyp.com/)
+[我的CSDN](http://blog.csdn.net/forezp) \| [我的Github](https://github.com/forezp)
 
 ## Comments
 
