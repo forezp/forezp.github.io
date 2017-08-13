@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Spring Cloud第一篇：服务注册与发现Eureka"
+title:  "SpringCloud教程第1篇：Eureka"
 categories: SpringCloud
 tags:  SpringCloud Eureka
 ---
@@ -305,3 +305,8 @@ spring:
 
 [springcloud eureka client 官方文档](http://projects.spring.io/spring-cloud/spring-cloud.html#_service_discovery_eureka_clients)
 
+
+### 优秀文章推荐：
+* [史上最简单的 SpringCloud 教程 | 终章](http://blog.csdn.net/forezp/article/details/70148833)
+* [史上最简单的 SpringCloud 教程 | 第一篇: 服务的注册与发现（Eureka）](http://blog.csdn.net/forezp/article/details/69696915)
+* [史上最简单的SpringCloud教程 | 第七篇: 高可用的分布式配置中心(Spring Cloud Config)](http://blog.csdn.net/forezp/article/details/70037513)
