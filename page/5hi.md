@@ -1,7 +1,7 @@
 ---
 layout: page
-title: gindd
-permalink: /about/
+title: hi
+permalink: /hi/
 icon: heart
 type: page
 ---
