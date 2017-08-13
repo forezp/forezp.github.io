@@ -6,8 +6,8 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: Forezp's Blog
-brief-intro: Full-Stack Dev Engineer
+title: 方志朋的博客
+brief-intro: 专注于Spring Cloud
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://forezp.github.io" # the base hostname & protocol for your site
 
@@ -23,7 +23,7 @@ zhihu_username: forezp
 linkedIn_username: 
 dribbble_username:
 
-description_footer: 厚德博学，求实创新！
+description_footer: 厚德博学，追求卓越！
 
 # comments
 # two ways to comment, only choose one, and use your own short name
@@ -57,4 +57,4 @@ excerpt_separator: "<!--more-->"
 
 # paginate
 gems: [jekyll-paginate]
-paginate: 12
+paginate: 15
