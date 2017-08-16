@@ -8,7 +8,7 @@ tags:  SpringCloud ribbon
 * content
 {:toc}
 
-在上一篇文章，讲了服务的注册和发现。在服务架构中，业务都会被拆分成一个独立的服务，服务与服务的通讯是基于http restful的。Spring cloud有两种调用方式，一种是ribbon+restTemplate，另一种是feign。在这一篇文章首先讲解下基于ribbon+rest。
+在上一篇文章，讲了服务的注册和发现。在微服务架构中，业务都会被拆分成一个独立的服务，服务与服务的通讯是基于http restful的。Spring cloud有两种服务调用方式，一种是ribbon+restTemplate，另一种是feign。在这一篇文章首先讲解下基于ribbon+rest。
 
 <!--more-->
 
@@ -19,7 +19,7 @@ tags:  SpringCloud ribbon
 >   -----摘自官网
 > 
 
-ribbon是一个负载均衡客户端，可以很好的控制htt和tcp的一些行为。Feign也用到ribbon，当你使用@ FeignClient，ribbon自动被应用。
+ribbon是一个负载均衡客户端，可以很好的控制htt和tcp的一些行为。Feign默认集成了ribbon。
 
 ribbon 已经默认实现了这些配置bean：
 
@@ -38,15 +38,14 @@ ribbon 已经默认实现了这些配置bean：
 
 ### 二、准备工作
 
-基于上一节的工程，启动eureka-server 工程；启动service-hi工程，它的端口为8762；将service-hi的配置文件的端口改为8763,并启动它，这时你会发现：service-hi在eureka-server注册了2个，这就相当于一个小的集群。访问localhost:8761如图所示：
+这一篇文章基于上一篇文章的工程，启动eureka-server 工程；启动service-hi工程，它的端口为8762；将service-hi的配置文件的端口改为8763,并启动，这时你会发现：service-hi在eureka-server注册了2个实例，这就相当于一个小的集群。访问localhost:8761如图所示：
 
-![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2279594-862f68c48735d126.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
+![](http://upload-images.jianshu.io/upload_images/2279594-862f68c48735d126.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ####  三、建一个服务消费者
 
 重新新建一个spring-boot工程，取名为：service-ribbon;
-它的pom.xml文件如下：
+在它的pom.xml文件分别引入起步依赖spring-cloud-starter-eureka、spring-cloud-starter-ribbon、spring-boot-starter-web，代码如下：
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -133,7 +132,8 @@ ribbon 已经默认实现了这些配置bean：
 
 
 ```
-向服务注册中心注册一个新的服务，这时service-ribbon既是服务提供者，也是服务消费者。配置文件application.yml如下：
+
+在工程的配置文件指定服务的注册中心地址为http://localhost:8761/eureka/，程序名称为 service-ribbon，程序端口为8764。配置文件application.yml如下：
 
 ```
 eureka:
@@ -147,7 +147,7 @@ spring:
     name: service-ribbon
 ```
 
-在工程的启动类中,通过@EnableDiscoveryClient向服务中心注册；并且注册了一个bean: restTemplate;通过@ LoadBalanced注册表明，这个restRemplate是负载均衡的。
+在工程的启动类中,通过@EnableDiscoveryClient向服务中心注册；并且向程序的ioc注入一个bean: restTemplate;并通过@LoadBalanced注解表明这个restRemplate开启负载均衡的功能。
 
 ```
 @SpringBootApplication
@@ -168,7 +168,7 @@ public class ServiceRibbonApplication {
 
 ```
 
-这时我们需要测试下,建一个service类：
+写一个测试类HelloService，通过之前注入ioc容器的restTemplate来消费service-hi服务的“/hi”接口，在这里我们直接用的程序名替代了具体的url地址，在ribbon中它会根据服务名来选择具体的服务实例，根据服务实例在请求的时候会用具体的url替换掉服务名，代码如下：
 
 ```
 @Service
@@ -184,9 +184,8 @@ public class HelloService {
 }
 
 ```
-通过restTemplate.getForObject方法，service-ribbon 就可以调用service-hi的方法了。并且在调用的工程中并之需要写服务的名，而不是具体的ip.
 
-写一个controller:
+写一个controller，在controller中用调用HelloService 的方法，代码如下：
 
 ```
 
@@ -207,21 +206,21 @@ public class HelloControler {
 }
 
 ```
-访问http://localhost:8764/hi?name=forezp,浏览器交替显示：
+在浏览器上多次访问http://localhost:8764/hi?name=forezp，浏览器交替显示：
 
 
 >hi forezp,i am from port:8762
 >
 >hi forezp,i am from port:8763
 
-这说明当我们通过调用restTemplate.getForObject("http://SERVICE-HI/hi?name="+name,String.class)，获取service-hi的方法时，已经做了负载均衡，访问了不同的端口的服务。
+这说明当我们通过调用restTemplate.getForObject("http://SERVICE-HI/hi?name="+name,String.class)方法时，已经做了负载均衡，访问了不同的端口的服务实例。
 
 ### 四、此时的架构
 
 ![此时架构图.png](http://upload-images.jianshu.io/upload_images/2279594-9f10b702188a129d.png)
 
 * 一个服务注册中心，eureka server,端口为8761
-* service-hi工程跑了两个副本，端口分别为8762,8763，分别向服务注册中心注册
+* service-hi工程跑了两个实例，端口分别为8762,8763，分别向服务注册中心注册
 * sercvice-ribbon端口为8764,向服务注册中心注册
 * 当sercvice-ribbon通过restTemplate调用service-hi的hi接口时，因为用ribbon进行了负载均衡，会轮流的调用service-hi：8762和8763 两个端口的hi接口；
 
@@ -236,8 +235,3 @@ public class HelloControler {
 [springcloud ribbon with eureka](http://blog.csdn.net/liaokailin/article/details/51469834)
 
 [服务消费者](http://blog.didispace.com/springcloud2/)
-
-### 优秀文章推荐：
-* [史上最简单的 SpringCloud 教程 | 终章](http://blog.csdn.net/forezp/article/details/70148833)
-* [史上最简单的 SpringCloud 教程 | 第一篇: 服务的注册与发现（Eureka）](http://blog.csdn.net/forezp/article/details/69696915)
-* [史上最简单的SpringCloud教程 | 第七篇: 高可用的分布式配置中心(Spring Cloud Config)](http://blog.csdn.net/forezp/article/details/70037513)
