@@ -9,26 +9,26 @@ tags:  SpringCloud feign
 {:toc}
 
 
-
-上一篇文章，讲述了通过restTemplate+ribbon去消费服务，这篇文章主要讲述通过feign去消费服务。
+上一篇文章，讲述了如何通过RestTemplate+Ribbon去消费服务，这篇文章主要讲述如何通过Feign去消费服务。
 
 <!--more-->
 
 ### 一、Feign简介
-Feign是一个声明式的web服务客户端，它使得写web服务变得更简单。使用Feign,只需要创建一个接口并注解。它具有可插拔的注解特性，包括Feign 注解和JAX-RS注解。Feign同时支持可插拔的编码器和解码器。Spring cloud对Spring mvc添加了支持，同时在spring web中次用相同的HttpMessageConverter。当我们使用feign的时候，spring cloud 整和了Ribbon和eureka去提供负载均衡。
+
+Feign是一个声明式的伪Http客户端，它使得写Http客户端变得更简单。使用Feign，只需要创建一个接口并注解。它具有可插拔的注解特性，可使用Feign 注解和JAX-RS注解。Feign支持可插拔的编码器和解码器。Feign默认集成了Ribbon，并和Eureka结合，默认实现了负载均衡的效果。
 
 简而言之：
 
-* feign采用的是接口加注解
-* feign 整合了ribbon
+* Feign 采用的是基于接口的注解
+* Feign 整合了ribbon
 
 ### 二、准备工作
 
-继续用上一节的工程： 启动eureka-server，端口为8761; 启动service-hi 两次，端口分别为8762 、8773.
+继续用上一节的工程， 启动eureka-server，端口为8761; 启动service-hi 两次，端口分别为8762 、8773.
 
 ### 三、创建一个feign的服务
 
-创建一个spring-boot工程，取名为：serice-feign,它的pom文件为：
+新建一个spring-boot工程，取名为serice-feign，在它的pom文件引入Feign的起步依赖spring-cloud-starter-feign、Eureka的起步依赖spring-cloud-starter-eureka、Web的起步依赖spring-boot-starter-web，代码如下：
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -113,10 +113,9 @@ Feign是一个声明式的web服务客户端，它使得写web服务变得更简
 
 </project>
 
-
-
 ```
-向服务注册中心注册它自己，这时service-feign既是服务提供者，也是服务消费者,配置文件application.yml
+
+在工程的配置文件application.yml文件，指定程序名为service-feign，端口号为8765，服务注册地址为http://localhost:8761/eureka/ ，代码如下：
 
 ```
 eureka:
@@ -131,7 +130,7 @@ spring:
 
 ```
 
-在程序的入口类，需要通过注解@EnableFeignClients来开启feign:
+在程序的启动类ServiceFeignApplication ，加上@EnableFeignClients注解开启Feign的功能：
 
 ```
 @SpringBootApplication
@@ -147,10 +146,9 @@ public class ServiceFeignApplication {
 
 ```
 
-定义一个feign接口类,通过@ FeignClient（“服务名”），来指定调用哪个服务：
+定义一个feign接口，通过@ FeignClient（“服务名”），来指定调用哪个服务。比如在代码中调用了service-hi服务的“/hi”接口，代码如下：
 
 ```
-
 
 /**
  * Created by fangzhipeng on 2017/4/6.
@@ -164,7 +162,7 @@ public interface SchedualServiceHi {
 
 ```
 
-在web层的controllrt:
+在Web层的controller层，对外暴露一个"/hi"的API接口，通过上面定义的Feign客户端SchedualServiceHi 来消费服务。代码如下：
 
 ```
 @RestController
@@ -180,7 +178,7 @@ public class HiController {
 
 
 ```
-访问http://localhost:8765/hi?name=forezp,浏览器交替显示：
+启动程序，多次访问http://localhost:8765/hi?name=forezp,浏览器交替显示：
 
 
 >hi forezp,i am from port:8762
@@ -188,34 +186,6 @@ public class HiController {
 >hi forezp,i am from port:8763
 
 
-#### 四、更改feign的配置
-
-在声明feignclient的时候，不仅要指定服务名，同时需要制定服务配置类：
-
-```
-@FeignClient(name = "stores", configuration = FooConfiguration.class)
-public interface StoreClient {
-    //..
-}
-
-```
-重写配置，需要加@Configuration注解，并重写下面的两个bean,栗子：
-
-```
-@Configuration
-public class FooConfiguration {
-    @Bean
-    public Contract feignContractg() {
-        return new feign.Contract.Default();
-    }
-
-    @Bean
-    public BasicAuthRequestInterceptor basicAuthRequestInterceptor() {
-        return new BasicAuthRequestInterceptor("user", "password");
-    }
-}
-
-```
 
 Feign源码解析：http://blog.csdn.net/forezp/article/details/73480304
 
