@@ -12,6 +12,8 @@ tags:  SpringCloud hystrix
 
 为了解决这个问题，业界提出了断路器模型。
 
+<!--more-->
+
 ### 一、断路器简介
 
 > Netflix has created a library called Hystrix that implements the circuit breaker pattern. In a microservice architecture it is common to have multiple layers of service calls.
