@@ -8,11 +8,9 @@ tags:  SpringCloud hystrix
 * content
 {:toc}
 
-在微服务架构中，我们将业务拆分成一个个的服务，服务与服务之间可以相互调用（RPC）。为了保证其高可用，单个服务又必须集群部署。由于网络原因或者自身的原因，服务并不能保证服务的100%可用，如果单个服务出现问题，调用这个服务就会出现网络延迟，此时若有大量的网络涌入，会形成任务累计，导致服务瘫痪，甚至导致服务“雪崩”。
+在微服务架构中，根据业务来拆分成一个个的服务，服务与服务之间可以相互调用（RPC），在Spring Cloud可以用RestTemplate+Ribbon和Feign来调用。为了保证其高可用，单个服务通常会集群部署。由于网络原因或者自身的原因，服务并不能保证100%可用，如果单个服务出现问题，调用这个服务就会出现线程阻塞，此时若有大量的请求涌入，Servlet容器的线程资源会被消耗完毕，导致服务瘫痪。服务与服务之间的依赖性，故障会传播，会对整个微服务系统造成灾难性的严重后果，这就是服务故障的“雪崩”效应。
 
-为了解决这个问题，就出现断路器模型。
-
-<!--more-->
+为了解决这个问题，业界提出了断路器模型。
 
 ### 一、断路器简介
 
@@ -20,11 +18,11 @@ tags:  SpringCloud hystrix
 > 
 >. ----摘自官网 
 
-Netflix已经创建了一个名为Hystrix的库来实现断路器模式。 在微服务架构中，多层服务调用是非常常见的。
+Netflix开源了Hystrix组件，实现了断路器模式，SpringCloud对这一组件进行了整合。 在微服务架构中，一个请求需要调用多个服务是非常常见的，如下图：
 
 ![HystrixGraph.png](http://upload-images.jianshu.io/upload_images/2279594-08d8d524c312c27d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
 
-较底层的服务如果出现故障，会导致连锁故障。当对特定的服务的调用达到一个阀值（hystric 是5秒20次） 断路器将会被打开。
+较底层的服务如果出现故障，会导致连锁故障。当对特定的服务的调用的不可用达到一个阀值（Hystric 是5秒20次） 断路器将会被打开。
 
 ![HystrixFallback.png](http://upload-images.jianshu.io/upload_images/2279594-8dcb1f208d62046f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
 
@@ -32,14 +30,11 @@ Netflix已经创建了一个名为Hystrix的库来实现断路器模式。 在�
 
 ### 二、准备工作
 
-基于上一篇文章的工程，首先启动：
-基于上一节的工程，启动eureka-server 工程；启动service-hi工程，它的端口为8762;
+这篇文章基于上一篇文章的工程，首先启动上一篇文章的工程，启动eureka-server 工程；启动service-hi工程，它的端口为8762。
 
 ### 三、在ribbon使用断路器
 
-改造serice-ribbon 工程的代码：
-
-在pox.xml文件中加入：
+改造serice-ribbon 工程的代码，首先在pox.xml文件中加入spring-cloud-starter-hystrix的起步依赖：
 
 ```
 <dependency>
@@ -48,7 +43,7 @@ Netflix已经创建了一个名为Hystrix的库来实现断路器模式。 在�
 </dependency>
 ```
 
-在程序的入口类加@EnableHystrix：
+在程序的启动类ServiceRibbonApplication 加@EnableHystrix注解开启Hystrix：
 
 ```
 @SpringBootApplication
@@ -70,10 +65,9 @@ public class ServiceRibbonApplication {
 
 ```
 
-改造HelloService类，加上@HystrixCommand，并指定fallbackMethod方法。
+改造HelloService类，在hiService方法上加上@HystrixCommand注解。该注解对该方法创建了熔断器的功能，并指定了fallbackMethod熔断方法，熔断方法直接返回了一个字符串，字符串为"hi,"+name+",sorry,error!"，代码如下：
 
 ```
-
 @Service
 public class HelloService {
 
@@ -95,24 +89,23 @@ public class HelloService {
 
 启动：service-ribbon 工程，当我们访问http://localhost:8764/hi?name=forezp,浏览器显示：
 
-
 >hi forezp,i am from port:8762
 
-此时关闭 service-hi ,工程，当我们再访问http://localhost:8764/hi?name=forezp，浏览器会显示：
+此时关闭 service-hi 工程，当我们再访问http://localhost:8764/hi?name=forezp，浏览器会显示：
 
 > hi ,forezp,orry,error!
 > 
 
 
-这就证明断路器起作用了。
+这就说明当 service-hi 工程不可用的时候，service-ribbon调用 service-hi的API接口时，会执行快速失败，直接返回一组字符串，而不是等待响应超时，这很好的控制了容器的线程阻塞。
 
 ### 四、Feign中使用断路器
 
-如果你使用了feign，feign是自带断路器的，并且是已经打开了。如果使用feign不想用断路器的话，可以在配置文件中关闭它，配置如下：
->feign.hystrix.enabled=false 
+Feign是自带断路器的，在D版本的Spring Cloud中，它没有默认打开。需要在配置文件中配置打开它，在配置文件加以下代码：
+>feign.hystrix.enabled=true
 >
 
-基于service-feign我们在改造下,只需要在SchedualServiceHi接口的注解中加上fallback的指定类就行了：
+基于service-feign工程进行改造，只需要在FeignClient的SchedualServiceHi接口的注解中加上fallback的指定类就行了：
 
 ```
 @FeignClient(value = "service-hi",fallback = SchedualServiceHiHystric.class)
@@ -122,8 +115,7 @@ public interface SchedualServiceHi {
 }
 
 ```
-SchedualServiceHiHystric类：
-
+SchedualServiceHiHystric需要实现SchedualServiceHi 接口，并注入到Ioc容器中，代码如下：
 
 ```
 @Component
@@ -136,22 +128,22 @@ public class SchedualServiceHiHystric implements SchedualServiceHi {
 
 ```
 
-启动四servcie-feign工程，打开http://localhost:8765/hi?name=forezp,注意此时service-hi还没打开,网页显示：
+启动四servcie-feign工程，浏览器打开http://localhost:8765/hi?name=forezp,注意此时service-hi工程没有启动，网页显示：
 
 > sorry forezp
 
-打开service-hi，网页显示；
+打开service-hi工程，再次访问，浏览器显示：
 
 >
 >hi forezp,i am from port:8762
 
 这证明断路器起到作用了。
 
-五、Circuit Breaker: Hystrix Dashboard (断路器：hystrix 仪表盘)
+五、Hystrix Dashboard (断路器：Hystrix 仪表盘)
 
-基于service-ribbon 改造下：
+基于service-ribbon 改造，Feign的改造和这一样。
 
-pom.xml加入：
+首选在pom.xml引入spring-cloud-starter-hystrix-dashboard的起步依赖：
 
 ```
 <dependency>
@@ -165,7 +157,7 @@ pom.xml加入：
 		</dependency>
 
 ```
-在主程序入口中加入@EnableHystrixDashboard注解，开启hystrixDashboard：
+在主程序启动类中加入@EnableHystrixDashboard注解，开启hystrixDashboard：
 
 ```
 @SpringBootApplication
@@ -212,24 +204,3 @@ public class ServiceRibbonApplication {
 [feign-hystrix](http://projects.spring.io/spring-cloud/spring-cloud.html#spring-cloud-feign-hystrix)
 
 [hystrix_dashboard](http://projects.spring.io/spring-cloud/spring-cloud.html#_circuit_breaker_hystrix_dashboard)
-
-### 优秀文章推荐：
-* [史上最简单的 SpringCloud 教程 | 终章](http://blog.csdn.net/forezp/article/details/70148833)
-* [史上最简单的 SpringCloud 教程 | 第一篇: 服务的注册与发现（Eureka）](http://blog.csdn.net/forezp/article/details/69696915)
-* [史上最简单的SpringCloud教程 | 第七篇: 高可用的分布式配置中心(Spring Cloud Config)](http://blog.csdn.net/forezp/article/details/70037513)
-
-勘误：有人反映feign的熔断器不起作用，springcloud版本的问题，用这个：
-
-```
-<dependencyManagement>
-   <dependencies>
-      <dependency>
-         <groupId>org.springframework.cloud</groupId>
-         <artifactId>spring-cloud-dependencies</artifactId>
-         <version>Camden.SR6</version>
-         <type>pom</type>
-         <scope>import</scope>
-      </dependency>
-   </dependencies>
-</dependencyManagement>
-```
