@@ -9,13 +9,14 @@ tags:  SpringCloud config
 {:toc}
 
 
+
 在上一篇文章讲述zuul的时候，已经提到过，使用配置服务来保存各个服务的配置文件。它就是Spring Cloud Config。
 
 <!--more-->
 
 ### 一、简介
 
-在分布式系统中，spring cloud config 提供一个服务端和客户端去提供可扩展的配置服务。我们可用用配置服务中心区集中的管理所有的服务的各种环境配置文件。配置服务中心采用git的方式存储配置文件，因此我们很容易部署修改，有助于对环境配置进行版本管理。
+在分布式系统中，由于服务数量巨多，为了方便服务配置文件统一管理，实时更新，所以需要分布式配置中心组件。在Spring Cloud中，有分布式配置中心组件spring cloud config ，它支持配置服务放在配置服务的内存中（即本地），也支持放在远程Git仓库中。在spring cloud config 组件中，分两个角色，一是config server，二是config client。
 
 ### 二、构建Config Server
 
@@ -105,7 +106,7 @@ tags:  SpringCloud config
 
 ```
 
-在程序的入口Application类加上@EnableConfigServer注解开启配置服务器。
+在程序的入口Application类加上@EnableConfigServer注解开启配置服务器的功能，代码如下：
 
 ```
 
@@ -120,7 +121,7 @@ public class ConfigServerApplication {
 
 ```
 
-需要在配置中心配置下：
+需要在程序的配置文件application.properties文件配置以下：
 
 ```
 spring.application.name=config-server
@@ -142,7 +143,9 @@ spring.cloud.config.server.git.password=your password
 * spring.cloud.config.server.git.username：访问git仓库的用户名
 * spring.cloud.config.server.git.password：访问git仓库的用户密码
 
-远程仓库https://github.com/forezp/SpringcloudConfig/ 中又个文件config-client-dev.properties文件中有一个属性：
+如果Git仓库为公开仓库，可以不填写用户名和密码，如果是私有仓库需要填写，本例子是公开仓库，放心使用。
+
+远程仓库https://github.com/forezp/SpringcloudConfig/ 中有个文件config-client-dev.properties文件中有一个属性：
 > foo = foo version 3
 
 启动程序：访问http://localhost:8888/foo/dev
@@ -269,7 +272,7 @@ server.port=8881
 * spring.cloud.config.uri= http://localhost:8888/ 指明配置服务中心的网址。
 
 
-程序的入口类：
+程序的入口类，写一个API接口“／hi”，返回从配置中心读取的foo变量的值，代码如下：
 
 ```
 @SpringBootApplication
