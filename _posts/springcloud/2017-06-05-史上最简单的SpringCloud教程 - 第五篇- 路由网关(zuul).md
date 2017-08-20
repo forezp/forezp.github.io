@@ -8,18 +8,20 @@ tags:  SpringCloud zuul
 * content
 {:toc}
 
-在微服务架构中，需要几个关键的组件，服务注册与发现、服务消费、负载均衡、断路器、智能路由、配置管理等，由这几个组件可以组建一个简单的微服务架构，如下图：
+
+
+在微服务架构中，需要几个基础的服务治理组件，包括服务注册与发现、服务消费、负载均衡、断路器、智能路由、配置管理等，由这几个基础组件相互协作，共同组建了一个简单的微服务系统。一个简答的微服务系统如下图：
+
+<!--more-->
 
 ![Azure (1).png](http://upload-images.jianshu.io/upload_images/2279594-6b7c148110ebc56e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
 **注意：A服务和B服务是可以相互调用的，作图的时候忘记了。并且配置服务也是注册到服务注册中心的。**
 
-<!--more-->
-
-客户端的请求首先经过负载均衡（zuul、Ngnix），再到达服务网关（zuul集群），然后再到具体的服务，服务统一注册到高可用的服务注册中心集群，服务的所有的配置文件由配置服务管理（下一篇文章讲述），配置服务的配置文件放在git仓库，方便开发人员随时改配置。
+在Spring Cloud微服务系统中，一种常见的负载均衡方式是，客户端的请求首先经过负载均衡（zuul、Ngnix），再到达服务网关（zuul集群），然后再到具体的服。，服务统一注册到高可用的服务注册中心集群，服务的所有的配置文件由配置服务管理（下一篇文章讲述），配置服务的配置文件放在git仓库，方便开发人员随时改配置。
 
 ### 一、Zuul简介
 
-Zuul的主要功能是路由和过滤器。路由功能是微服务的一部分，比如／api/user映射到user服务，/api/shop映射到shop服务。zuul实现了负载均衡。
+Zuul的主要功能是路由转发和过滤器。路由功能是微服务的一部分，比如／api/user转发到到user服务，/api/shop转发到到shop服务。zuul默认和Ribbon结合实现了负载均衡的功能。
 
 zuul有以下功能：
 
@@ -128,7 +130,7 @@ zuul有以下功能：
 
 ```
 
-在其入口applicaton类加上注解@EnableZuulProxy，开启zuul：
+在其入口applicaton类加上注解@EnableZuulProxy，开启zuul的功能：
 
 ```
 @EnableZuulProxy
@@ -144,7 +146,7 @@ public class ServiceZuulApplication {
 
 ```
 
-加上配置文件：
+加上配置文件application.yml加上以下的配置代码：
 
 ```
 eureka:
@@ -167,7 +169,7 @@ zuul:
 
 ```
 
-首先向eureka注册自己，端口为8769，服务名为service-zuul；以/api-a/ 开头的请求都指向service-ribbon；以/api-b/开头的请求都指向service-feign；
+首先指定服务注册中心的地址为http://localhost:8761/eureka/，服务的端口为8769，服务名为service-zuul；以/api-a/ 开头的请求都转发给service-ribbon服务；以/api-b/开头的请求都转发给service-feign服务；
 
 依次运行这五个工程;打开浏览器访问：http://localhost:8769/api-a/hi?name=forezp ;浏览器显示：
 
@@ -179,7 +181,7 @@ zuul:
 >hi forezp,i am from port:8762
 >
 
-这说明zuul起到了路由的作用；
+这说明zuul起到了路由的作用
 
 ### 四、服务过滤
 
