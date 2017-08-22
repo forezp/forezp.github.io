@@ -9,7 +9,7 @@
 title: 方志朋的博客
 brief-intro: 专注于Spring Cloud
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://forezp.github.io" # the base hostname & protocol for your site
+url: "http://www.fangzhipeng.com" # the base hostname & protocol for your site
 
 permalink: /:year/:month/:day/:title/
 
