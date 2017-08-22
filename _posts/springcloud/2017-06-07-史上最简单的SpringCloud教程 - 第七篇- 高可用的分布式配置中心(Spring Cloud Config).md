@@ -9,7 +9,7 @@ tags:  SpringCloud config
 {:toc}
 
 
-上一篇内容讲述，一个服务如何从配置中心读取文件，配置中心如何从远程git读取配置文件，当服务很多时，都需要同时从配置中心读取文件的时候，这时我们可以考虑将配置中心做成一个微服务，并且将其集群化，从而达到高可用，架构图如下：
+上一篇文章讲述了一个服务如何从配置中心读取文件，配置中心如何从远程git读取配置文件，当服务实例很多时，都从配置中心读取文件，这时可以考虑将配置中心做成一个微服务，将其集群化，从而达到高可用，架构图如下：
 
 ![Azure (3).png](http://upload-images.jianshu.io/upload_images/2279594-babe706075d72c58.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
 
@@ -17,9 +17,9 @@ tags:  SpringCloud config
 
 ### 一、准备工作
 
-继续使用上一篇文章的工程，创建一个eureka-server工程，用作服务中心。
+继续使用上一篇文章的工程，创建一个eureka-server工程，用作服务注册中心。
 
-其pom.xml:
+在其pom.xml文件引入Eureka的起步依赖spring-cloud-starter-eureka-server，代码如下:
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -101,7 +101,7 @@ tags:  SpringCloud config
 </project>
 
 ```
-配置文件：
+在配置文件application.yml上，指定服务端口为8889，加上作为服务注册中心的基本配置，代码如下：
 
 ```
 server:
@@ -133,7 +133,7 @@ public class EurekaServerApplication {
 
 ### 二、改造config-server
 
-在其pom.xml文件下:
+在其pom.xml文件加上EurekaClient的起步依赖spring-cloud-starter-eureka，代码如下:
 
 ```
 <dependencies>
@@ -156,7 +156,7 @@ public class EurekaServerApplication {
 
 ```
 
-配置文件,将其注册问服务：
+配置文件application.yml，指定服务注册地址为http://localhost:8889/eureka/，其他配置同上一篇文章，完整的配置如下：
 
 ```
 spring.application.name=config-server
@@ -169,10 +169,12 @@ spring.cloud.config.server.git.username= your username
 spring.cloud.config.server.git.password= your password
 eureka.client.serviceUrl.defaultZone=http://localhost:8889/eureka/
 ```
+最后需要在程序的启动类Application加上@EnableEureka的注解。
 
 ### 三、改造config-client
 
-将其注册微 eureka服务，pom文件配置：
+将其注册微到服务注册中心，作为Eureka客户端，需要pom文件加上起步依赖spring-cloud-starter-eureka，代码如下：
+
 
 ```
 <dependency>
@@ -196,7 +198,7 @@ eureka.client.serviceUrl.defaultZone=http://localhost:8889/eureka/
 		</dependency>
 ```
 
-配置文件，bootstrap.properties
+配置文件bootstrap.properties，注意是bootstrap。加上服务注册地址为http://localhost:8889/eureka/
 
 ```
 spring.application.name=config-client
@@ -212,12 +214,12 @@ server.port=8881
 
 ```
 
-* spring.cloud.config.discovery.enabled 是非从配置中心读取文件
-* spring.cloud.config.discovery.serviceId 配置中心的servieId，即服务名
+- spring.cloud.config.discovery.enabled 是从配置中心读取文件。
+- spring.cloud.config.discovery.serviceId 配置中心的servieId，即服务名。
 
 这时发现，在读取配置文件不再写ip地址，而是服务名，这时如果配置服务部署多份，通过负载均衡，从而高可用。
 
-一次启动eureka-servr,config-server,config-client
+依次启动eureka-servr,config-server,config-client
 访问网址：http://localhost:8889/
 
 ![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2279594-1639fdb713faa405.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/600)
@@ -234,8 +236,3 @@ server.port=8881
 ### 四、参考资料
 
 [spring_cloud_config](http://projects.spring.io/spring-cloud/spring-cloud.html#_spring_cloud_config)
-
-### 优秀文章推荐：
-* [史上最简单的 SpringCloud 教程 | 终章](http://blog.csdn.net/forezp/article/details/70148833)
-* [史上最简单的 SpringCloud 教程 | 第一篇: 服务的注册与发现（Eureka）](http://blog.csdn.net/forezp/article/details/69696915)
-* [史上最简单的SpringCloud教程 | 第七篇: 高可用的分布式配置中心(Spring Cloud Config)](http://blog.csdn.net/forezp/article/details/70037513)
