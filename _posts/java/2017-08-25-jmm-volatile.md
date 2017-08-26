@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "java8 lambda"
+title:  "Java并发编程：JMM和volatile关键字"
 categories: java并发编程
 tags:  java java并发编程 volatile
 ---
