@@ -7,7 +7,7 @@
 
 # Site settings
 title: 方志朋的博客
-brief-intro: 专注于Spring Cloud
+brief-intro: 专注于微服务、云计算、大数据
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://www.fangzhipeng.com" # the base hostname & protocol for your site
 
