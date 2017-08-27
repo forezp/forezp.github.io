@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Java并发编程：线程封闭和ThreadLocal详解字"
+title:  "Java并发编程：线程封闭和ThreadLocal详解"
 categories: java并发编程
 tags:  java java并发编程 volatile
 ---
