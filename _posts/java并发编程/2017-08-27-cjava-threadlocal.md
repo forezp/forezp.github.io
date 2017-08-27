@@ -12,6 +12,7 @@ tags:  java java并发编程 volatile
 
 ## 什么是线程封闭
 
+![测试](http://fangzhipeng.oss-cn-hangzhou.aliyuncs.com/WechatIMG1.jpeg)
 当访问共享变量时，往往需要加锁来保证数据同步。一种避免使用同步的方式就是不共享数据。如果仅在单线程中访问数据，就不需要同步了。这种技术称为线程封闭。在Java语言中，提供了一些类库和机制来维护线程的封闭性，例如局部变量和ThreadLocal类，本文主要深入讲解如何使用ThreadLocal类来保证线程封闭。
 
 <!--more-->
