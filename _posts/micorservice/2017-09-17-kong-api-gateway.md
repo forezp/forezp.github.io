@@ -10,7 +10,7 @@ tags:  nginx kong
 {:toc}
 
 
-# kong api gateway 初体验
+
 
 kong api gateway 初体验（first sight?）。
 
