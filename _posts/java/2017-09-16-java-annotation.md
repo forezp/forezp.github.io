@@ -1,3 +1,15 @@
+---
+layout: post
+title:  "Java 注解详解"
+categories: java
+tags:  java
+
+---
+
+* content
+{:toc} 
+
+
 在使用SpringBoot作为Web敏捷开发的框架之后，SpringBoot除了自动装配配置的便捷之外，在很多时候需要基于注解来开发。注解不仅增加了代码的可读性，还增加了开发的速度。这篇文章主要讲述Java 注解。
 
 <!--more-->
