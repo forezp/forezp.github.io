@@ -12,9 +12,12 @@ springboot对JMS提供了很好的支持，对其做了起步依赖。
 
 <!--more-->
 
+
 ## 构架工程
 
+
 创建一个springboot工程，在其pom文件加入：
+
 
 ```
 
@@ -40,7 +43,9 @@ spring.mail.default-encoding=UTF-8
 
 ## 测试发邮件
 
+
 测试代码清单如下：
+
 
 ```
 package com.forezp;
@@ -188,6 +193,7 @@ public class SpringbootJmsApplicationTests {
 [http://blog.720ui.com/2017/springboot_07_othercore_javamail/](http://blog.720ui.com/2017/springboot_07_othercore_javamail/)
 
 ## 源码下载
+
 [https://github.com/forezp/SpringBootLearning](https://github.com/forezp/SpringBootLearning)
 
 ### 优秀文章推荐：
