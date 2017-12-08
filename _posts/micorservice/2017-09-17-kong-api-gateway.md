@@ -10,8 +10,6 @@ tags:  nginx kong
 {:toc}
 
 
-
-
 kong api gateway 初体验（first sight?）。
 
 Kong是一个可扩展的开源API层（也称为API网关或API中间件）。 Kong运行在任何RESTful API的前面，并通过插件扩展，它们提供超出核心平台的额外功能和服务。
