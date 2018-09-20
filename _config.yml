@@ -56,5 +56,6 @@ tag_dir: tag/
 excerpt_separator: "<!--more-->"
 
 # paginate
-gems: [jekyll-paginate]
+# gems: [jekyll-paginate]
+plugins:[jekyll-paginate]
 paginate: 15

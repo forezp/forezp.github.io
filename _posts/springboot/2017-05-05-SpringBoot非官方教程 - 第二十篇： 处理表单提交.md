@@ -98,7 +98,7 @@ public class GreetingController {
 
 src/main/resources/templates/greeting.html
 
-```
+```html
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -120,7 +120,7 @@ src/main/resources/templates/greeting.html
 
 src/main/resources/templates/result.html
 
-```
+```html
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
