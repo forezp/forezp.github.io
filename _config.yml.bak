@@ -57,5 +57,5 @@ excerpt_separator: "<!--more-->"
 
 # paginate
 # gems: [jekyll-paginate]
-plugins: [jekyll-paginate]
+plugins:[jekyll-paginate]
 paginate: 15
