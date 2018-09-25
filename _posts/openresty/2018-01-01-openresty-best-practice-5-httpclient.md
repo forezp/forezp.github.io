@@ -1,6 +1,12 @@
-# Openresty最佳案例 | 第5篇：http和C_json模块
+---
+layout: post
+title:  "Openresty最佳案例 | 第5篇：http和C_json模块"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## http客户端
+* content
+{:toc}
 
 Openresty没有提供默认的Http客户端，需要下载第三方的http客户端。
 

@@ -1,4 +1,12 @@
-# Openresty最佳案例 | 第3篇:Openresty的安装
+---
+layout: post
+title:  " Openresty最佳案例 | 第3篇:Openresty的安装"
+categories: Openresty 
+tags:  Openresty Nginx
+---
+
+* content
+{:toc}
 
 我的服务器为一台全新的centos 7的服务器，所以从头安装openresty，并记录了安装过程中出现的问题，以及解决办法。 
 

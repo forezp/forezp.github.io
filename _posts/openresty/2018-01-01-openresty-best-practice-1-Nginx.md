@@ -1,6 +1,13 @@
-# Openresrt最佳案例 | 第1篇：Nginx介绍
+---
+layout: post
+title:  "Openresrt最佳案例 | 第1篇：Nginx介绍"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## Nginx 简介
+* content
+{:toc}
+
 
 Nginx是一个高性能的Web 服务器，同时是一个高效的反向代理服务器，它还是一个IMAP/POP3/SMTP
 代理服务器。

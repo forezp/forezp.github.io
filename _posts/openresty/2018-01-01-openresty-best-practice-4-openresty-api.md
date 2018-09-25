@@ -1,7 +1,17 @@
-# Openresty最佳案例 | 第4篇：OpenResty常见的api
+---
+layout: post
+title:  "Openresty最佳案例 | 第4篇：OpenResty常见的api"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## 获取请求参数
+* content
+{:toc}
 
+
+这篇文章主要讲解OpenResty常见的api。
+
+<!--more-->
 
 vim  /usr/example/example.conf
 
@@ -15,7 +25,7 @@ vim  /usr/example/example.conf
 
 ```
 
-<!--more-->
+
 
 重新加载nginx配置文件： nginx -s reload
 

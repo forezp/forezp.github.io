@@ -1,6 +1,12 @@
-# Openresty最佳案例 | 第7篇： 模块开发、OpenResty连接Redis 
+---
+layout: post
+title:  "Openresty最佳案例 | 第7篇： 模块开发、OpenResty连接Redis"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## Lua模块开发
+* content
+{:toc}
  
 在实际的开发过程中，不可能把所有的lua代码写在一个lua文件中，通常的做法将特定功能的放在一个lua文件中，即用lua模块开发。在lualib目录下，默认有以下的lua模块。
 

@@ -1,5 +1,13 @@
+---
+layout: post
+title:  "openresty最佳案例案例-汇总"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## 为什么有这系列文章
+* content
+{:toc}
+
 
 权限控制在任何的系统中都为一个基本模块，没有权限，就不要谈系统。权限控制的重要性不言而喻。在我所做的Spring Cloud微服务系统，采用的权限控制框架为Spring Cloud Oauth2和Spring Boot Securtiy，这两个框架组合构成了一个强大的权限安全模块。搭建好，设置好，其实是非常简单的。Spring Boot Securtiy是对方法层面的控制，所以要在方法上加注解。随着业务的扩张，注解这种方式无疑给开发人员带来了非常大的工作量，由于开发人员的不规范，甚至连注解都不愿意写了。我在思考能不能废弃掉Spring Cloud Oauth2和Spring Boot Securtiy，废弃掉注解，让开发人员从注解中解放出来。
 

@@ -1,6 +1,13 @@
-# Openresty最佳案例 | 第9篇：Openresty实现的网关权限控制
+---
+layout: post
+title:  "Openresty最佳案例 | 第9篇：Openresty实现的网关权限控制"
+categories: Openresty 
+tags:  Openresty Nginx
+---
 
-## 简介
+* content
+{:toc}
+
 
 采用openresty 开发出的api网关有很多，比如比较流行的kong、orange等。这些API 网关通过提供插件的形式，提供了非常多的功能。这些组件化的功能往往能够满足大部分的需求，如果要想达到特定场景的需求，可能需要二次开发，比如RBAC权限系统。本小节通过整合前面的知识点，来构建一个RBAC权限认证系统。
 
