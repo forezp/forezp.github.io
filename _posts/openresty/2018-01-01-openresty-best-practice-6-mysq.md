@@ -4,6 +4,8 @@
  
 Centos系统下安装mysql，先下载mysql-community-release-el7-5.noarch.rpm，然后通过yum安装，安装过程一直确定【Y】即可。
 
+<!--more-->
+
 ```
 cd /usr/downloads/
 

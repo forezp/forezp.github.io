@@ -4,6 +4,8 @@
 
 Openresty没有提供默认的Http客户端，需要下载第三方的http客户端。
 
+<!--more-->
+
 下载lua-resty-http到lualib目录下，使用以下的命令下载：
 
 ```

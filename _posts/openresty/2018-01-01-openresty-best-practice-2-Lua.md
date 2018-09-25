@@ -8,7 +8,7 @@
 > Lua 是巴西里约热内卢天主教大学（Pontifical Catholic University of Rio de Janeiro）里的一个研究小组，由Roberto Ierusalimschy、Waldemar Celes 和 Luiz Henrique de Figueiredo所组成并于1993年开发。
 >                ---摘抄 http://www.runoob.com/lua/lua-tutorial.html
 
-
+<!--more-->
 
 ## 环境搭建
 

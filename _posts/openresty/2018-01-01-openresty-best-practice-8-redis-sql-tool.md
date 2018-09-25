@@ -4,6 +4,7 @@
 
 RBAC（Role-Based Access Control，基于角色的访问控制），用户基于角色的访问权限控制。简单地说，一个用户拥有若干角色，每一个角色拥有若干权限。这样，就构造成“用户-角色-权限”的授权模型。在这种模型中，用户与角色之间，角色与权限之间，一般都是多对多的关系。如图所示：
 
+<!--more-->
 
 ![WX20171105-214559@2x.png](http://upload-images.jianshu.io/upload_images/2279594-d6c2a08e6c32cf53.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
